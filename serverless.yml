@@ -1,0 +1,8 @@
+org: miqdadfarcha
+app: o-educate-server
+service: o-educate-server
+component: express
+name: express-starter
+
+inputs:
+  src: ./
