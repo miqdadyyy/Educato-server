@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
+const SequelizeGuard = require('sequelize-guard');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
@@ -31,7 +32,17 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
+const guard = new SequelizeGuard(sequelize, {
+  sync: false,
+  prefix: '',
+  UserModel: db.user,
+  userCache: false
+});
+
+guard.init().allow('admin').to('view').on('page').commit();
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+db.guard = guard;
 
 module.exports = db;
