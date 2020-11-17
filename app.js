@@ -1,18 +1,15 @@
-'use strict';
-
 const express = require('express');
+const logger = require('morgan');
+const cors = require('cors');
+const apiRouter = require('./api');
+global.Response = require('./utils/response');
 
 const app = express();
 
-// Routes
-app.get('/*', (req, res) => {
-  res.send(`Request received: ${req.method} - ${req.path}`);
-});
-
-// Error handler
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).send('Internal Serverless Error');
-});
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cors());
+app.use('/api', apiRouter);
 
 module.exports = app;
